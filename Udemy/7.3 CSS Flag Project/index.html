@@ -1,16 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>CSS Flag Project</title>
+        <style>
+            /* Write your CSS Code here */
+            /* red rectangle */
+            div.flag {
+                background-color: #ce1126;
+                width: 900px;
+                height: 600px;
+                position: relative;
+            }
+            /* blue rectangle */
+            div.flag > div {
+                background-color: #002868;
+                height: 300px;
+                width: 900px;
+                position: absolute;
+                top: 150px;
+            }
+            .flag > div > div {
+                background-color: white;
+                width: 200px;
+                height: 200px;
+                margin: 0px;
+                border-radius: 50%;
+                position: relative;
+                left: 350px;
+                top: 50px;
+                color: black;
+            }
 
-<head>
-  <meta charset="UTF-8">
-  <title>CSS Flag Project</title>
-  <style>
-    /* Write your CSS Code here */
-    
-  </style>
-</head>
+            p {
+                text-align: center;
+                font-family: "Times New Roman", Times, serif;
+                font-size: 5rem;
+                margin: 0px;
+                color: white;
+            }
 
-<!-- 
+            body > div > div > div > p {
+                color: black;
+            }
+        </style>
+    </head>
+
+    <!-- 
   IMPORTANT! Do not change any HTML
 Don't add any classes/ids/elements 
 Use what you know about combining selectors 
@@ -20,15 +56,14 @@ Hint 2: You can use CSS inspection to get the colors from
 https://appbrewery.github.io/flag-of-laos/
 -->
 
-<body>
-  <div class="flag">
-    <p>The Flag</p>
-    <div>
-      <div>
-        <p>of Laos</p>
-      </div>
-    </div>
-  </div>
-</body>
-
+    <body>
+        <div class="flag">
+            <p>The Flag</p>
+            <div>
+                <div>
+                    <p>of Laos</p>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
