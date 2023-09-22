@@ -1,0 +1,19 @@
+body {
+    background-color: black;
+}
+div {
+    font-family: "Inconsolata", monospace;
+    font-family: "Libre Baskerville", serif;
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+    width: 50%;
+    margin-left: 25%;
+}
+p {
+    text-transform: capitalize;
+}
+#french-guy {
+    border: 5px solid white;
+    width: 100%;
+}
