@@ -3,6 +3,8 @@ var userClickedPattern = [];
 var buttonColours = ["red", "blue", "green", "yellow"];
 var gameStarted = false;
 var level = 0;
+var highScore = 0;
+$("#score").text("High Score: " + highScore);
 
 $(".btn").click(function () {
     var userChosenColour = $(this).attr("id");
@@ -46,6 +48,7 @@ $(document).keypress(function () {
     if (!gameStarted) {
         $("#level-title").text("Level " + level);
         nextSequence();
+        gameStarted = true;
     }
 });
 
@@ -65,6 +68,10 @@ function checkAnswer(currentLevel) {
         setTimeout(function () {
             $("body").removeClass("game-over");
         }, 200);
+        if (level > highScore) {
+            highScore = level;
+            $("#score").text("High Score: " + highScore);
+        }
         $("#level-title").text("Game Over, Press Any Key to Restart");
         startOver();
     }
