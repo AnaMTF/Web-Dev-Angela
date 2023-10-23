@@ -18,6 +18,9 @@ function checkPassword(req, res, next) {
     if (password === "ILoveProgramming") {
         userIsAuthorised = true;
     }
+    else{
+        userIsAuthorised = false;
+    }
     next();
 }
 
