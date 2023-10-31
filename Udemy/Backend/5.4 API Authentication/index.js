@@ -44,7 +44,6 @@ app.get("/basicAuth", async (req, res) => {
  try {
   const result = await axios.get(
     API_URL + "/all?page=2",
-    {},
     {
       auth: {
         username: yourUsername,
