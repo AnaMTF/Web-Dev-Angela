@@ -9,17 +9,13 @@ const db = new pg.Client({
   user: "postgres",
   host: "localhost",
   database: "world",
-  password: "123456",
+  password: "papusica123",
   port: 5432,
 });
 
 db.connect();
 
-let quiz = [
-  { country: "France", capital: "Paris" },
-  { country: "United Kingdom", capital: "London" },
-  { country: "United States of America", capital: "New York" },
-];
+let quiz = [];
 
 db.query("SELECT * FROM capitals", (err, res) => {
   if (err) {
@@ -42,7 +38,7 @@ let currentQuestion = {};
 app.get("/", async (req, res) => {
   totalCorrect = 0;
   await nextQuestion();
-  console.log(currentQuestion);
+  //console.log(currentQuestion);
   res.render("index.ejs", { question: currentQuestion });
 });
 
@@ -68,6 +64,7 @@ async function nextQuestion() {
   const randomCountry = quiz[Math.floor(Math.random() * quiz.length)];
 
   currentQuestion = randomCountry;
+  console.log(currentQuestion);
 }
 
 app.listen(port, () => {
