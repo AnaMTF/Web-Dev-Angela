@@ -34,10 +34,13 @@ app.get("/", async (req, res) => {
 app.post("/add", async (req, res) => {
   //Write your code here.
   const input = req.body["country"];
+  const capitalizedInput = input && input.length > 0
+  ? input.charAt(0).toUpperCase() + input.slice(1)
+  : input;
 
   const result = await db.query(
     "SELECT country_code FROM countries WHERE country_name = $1",
-    [input]
+    [capitalizedInput]
   );
 
   if (result.rows.length !== 0) {
@@ -48,6 +51,9 @@ app.post("/add", async (req, res) => {
       countryCode,
     ]);
     res.redirect("/");
+  }
+  else {
+    res.send("Country not found!");
   }
 });
 
