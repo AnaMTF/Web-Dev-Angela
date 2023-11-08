@@ -65,16 +65,48 @@ app.post("/add", async (req, res) => {
     const data = result.rows[0];
     const countryCode = data.country_code;
     try {
-      await db.query(
-        "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
-        [countryCode, currentUserId]
-      );
-      res.redirect("/");
-    } catch (err) {
+      const visitedResult = await db.query(
+      "SELECT * FROM visited_countries WHERE country_code = $1 AND user_id = $2;",
+      [countryCode, currentUserId]
+    );
+        if (visitedResult.rows.length == 0){
+        await db.query(
+          "INSERT INTO visited_countries (country_code, user_id) VALUES ($1, $2)",
+          [countryCode, currentUserId]
+        );
+        res.redirect("/");
+        }else{
+          const countries = await checkVisisted();
+          res.render("index.ejs", {
+            countries: countries,
+            total: countries.length,
+            users: users,
+            color: currentUser.color,
+            error: "Country has already been added, try again.",
+          });
+        }
+    }
+    catch (err) {
       console.log(err);
+        const countries = await checkVisisted();
+        res.render("index.ejs", {
+          countries: countries,
+          total: countries.length,
+          users: users,
+          color: currentUser.color,
+          error: "Country has already been added, try again.",
+        });
     }
   } catch (err) {
     console.log(err);
+    const countries = await checkVisisted();
+    res.render("index.ejs", {
+      countries: countries,
+      total: countries.length,
+      users: users,
+      color: currentUser.color,
+      error: "Country name does not exist, try again.",
+    });
   }
 });
 app.post("/user", async (req, res) => {
