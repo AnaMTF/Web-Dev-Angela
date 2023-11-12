@@ -60,7 +60,7 @@ app.post("/edit",async (req, res) => {
 });
 
 app.post("/delete",async (req, res) => {
-  const id = req.body.deletedItemId;
+  const id = req.body.deleteItemId;
   try {
     await db.query("DELETE FROM items WHERE id = $1", [id]);
     res.redirect("/");
