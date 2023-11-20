@@ -30,6 +30,23 @@ app.get("/login", function(req, res){
     res.render("login");
 });
 
+app.post("/login", function(req, res){
+    const email = req.body.username;
+    const password = req.body.password;
+
+    db.query(
+        "SELECT * FROM users WHERE email = $1 AND password = $2",
+        [email, password],
+        function(err, result){
+            if(err){
+                console.log(err);
+            } else {
+                res.render("secrets");
+            }
+        }
+    )
+});
+
 app.get("/register", function(req, res){
     res.render("register");
 });
