@@ -133,3 +133,6 @@ Udemy/Backend/5.1*Git*Ignore*Test/.pnp.*
 
 
 node_modules
+
+.env
+.env.test
