@@ -52,6 +52,8 @@ Udemy/Backend/5.1*Git*Ignore*Test/*.tsbuildinfo
 
 # Optional npm cache directory
 Udemy/Backend/5.1*Git*Ignore*Test/.npm
+Udemy/Backend/Secret*-*Starting*Code/.env
+
 
 # Optional eslint cache
 Udemy/Backend/5.1*Git*Ignore*Test/.eslintcache
@@ -133,6 +135,5 @@ Udemy/Backend/5.1*Git*Ignore*Test/.pnp.*
 
 
 node_modules
-
-.env
-.env.test
+**/.env
+Udemy/Backend/Secrets - Starting Code/.env
