@@ -4,6 +4,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import ejs from "ejs";
 import pg from "pg";
+import md5 from "md5";
 
 const app = express();
 const port = 3000;
@@ -37,7 +38,7 @@ app.get("/login", function(req, res){
 
 app.post("/login", async (req, res) => {
     const email = req.body.username;
-    const password = req.body.password;
+    const password = md5(req.body.password);
     try {
         const result = await db.query("SELECT username, pgp_sym_decrypt(password, ($1)) AS password FROM users2 WHERE username=($2)", [secretKey, email]);
         const user = result.rows[0];
@@ -56,7 +57,7 @@ app.get("/register", function(req, res){
 
 app.post("/register", async (req, res) => {
     const email = req.body.username;
-    const password = req.body.password;
+    const password = md5(req.body.password);
     try {
         await db.query("INSERT INTO users2 (username, password) VALUES ($1, pgp_sym_encrypt(($2), ($3)))", [email, password, secretKey]);
         res.render("secrets.ejs");
