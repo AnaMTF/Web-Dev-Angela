@@ -2,9 +2,7 @@ import dotenv from "dotenv"; dotenv.config();
 
 import express from "express";
 import bodyParser from "body-parser";
-import ejs from "ejs";
 import pg from "pg";
-import md5 from "md5";
 import bcrypt from "bcrypt";
 
 const app = express();
