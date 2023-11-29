@@ -11,7 +11,6 @@ import session from "express-session";
 
 const app = express();
 const port = 3000;
-const saltRounds = 10;
 
 const secretKey = process.env.SECRET; 
 const db = new pg.Client({
@@ -40,20 +39,7 @@ app.get("/login", function(req, res){
 });
 
 app.post("/login", async (req, res) => {
-    const email = req.body.username;
-    const password = req.body.password;
-    try {
-        const result = await db.query("SELECT email, password FROM users WHERE email=($1)", [email]);
-        const user = result.rows[0];
-        console.log(user);
-        bcrypt.compare(password, user.password, function(err, result) {
-            if (result === true) {
-                res.render("secrets.ejs");
-            } 
-        });
-    } catch (err) {
-        console.log(err.message);
-    };
+   
 })
 
 app.get("/register", function(req, res){
@@ -61,16 +47,7 @@ app.get("/register", function(req, res){
 });
 
 app.post("/register", async (req, res) => {
-    bcrypt.hash(req.body.password, saltRounds, async (err, hash) => {
-        const email = req.body.username;
-    const password = hash;
-    try {
-        await db.query("INSERT INTO users (email, password) VALUES ($1, $2)", [email, password]);
-        res.render("secrets.ejs");
-    } catch (err) {
-        console.log(err.message);
-    };
-    });
+    
     
     
 })
