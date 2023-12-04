@@ -18,13 +18,28 @@ const db = new pg.Client({
   host: process.env.HOST,
   database: process.env.DATABASE,
   password: process.env.PASSWORD,
-  port: 5432,
+  port: process.env.PORT,
 });
 db.connect();
+
+const localStrategy = localPassport.Strategy;
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use()
  
 let users = [
   { id: 1, email: "ana_titeche@yahoo.com", password: "test123" },
