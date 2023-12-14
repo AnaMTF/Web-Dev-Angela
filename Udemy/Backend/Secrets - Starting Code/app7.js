@@ -159,6 +159,13 @@ app.get("/secrets", (req, res) => {
     res.redirect("/login");
   };
 });
+
+app.get("/logout",(req,res)=>{
+        res.clearCookie("connect.sid"); // Clear the cookies left on client-side
+        req.logOut(()=>{
+            res.redirect("/"); // Redirect to the home page after logout
+        });
+    });
  
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
