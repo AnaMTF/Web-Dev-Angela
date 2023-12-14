@@ -6,6 +6,7 @@ import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import bcrypt from 'bcrypt';
 import GoogleStrategy from 'passport-google-oauth20';
+import FacebookStrategy from 'passport-facebook';
  
  
 const db = new pg.Client({
