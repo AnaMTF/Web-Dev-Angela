@@ -191,12 +191,33 @@ app.get("/secrets", (req, res) => {
   };
 });
 
+app.get("/submit", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("submit.ejs");
+  } else {
+    res.redirect("/login");
+  };
+});
+
+app.post("/submit", async (req, res) => {
+  try {
+    const secret = req.body.secret;
+    console.log(req.user);
+    // await db.query("INSERT INTO secrets (secret, user_id) VALUES ($1, $2)", [secret, currentUserId]);
+    // res.redirect("/secrets");
+  } catch (err) {
+    console.log(err);
+  };
+});
+
 app.get("/logout",(req,res)=>{
         res.clearCookie("connect.sid"); // Clear the cookies left on client-side
         req.logOut(()=>{
             res.redirect("/"); // Redirect to the home page after logout
         });
     });
+
+
  
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
