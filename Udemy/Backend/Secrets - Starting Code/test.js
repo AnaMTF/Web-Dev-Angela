@@ -48,11 +48,12 @@ passport.use(
       if (hash_password.length > 0) {
         return cb(null, false, { message: 'User already exists!' });
       } else {
-        bcrypt.hash(password, saltRounds, (err, hash) => {
+        bcrypt.hash(password, saltRounds, async (err, hash) => {
           if (err) {
             return cb(err);
           } else {
-            db.query("INSERT INTO users(username, password) VALUES ($1, $2)", [username, hash]);
+            const result = await db.query("INSERT INTO users(username, password) VALUES ($1, $2) RETURNING id", [username, hash]);
+            currentUserId = result.rows[0].id; 
             return cb(null, true);
           }
         });
@@ -78,7 +79,7 @@ passport.use(
         if (!result) {
           return cb(null, false, { message: 'User or password is incorrect!' });
         } else {
-          currentUserId = Number(hash_password[0].id);
+          currentUserId = hash_password[0].id;
           return cb(null, result);
         }
       });
