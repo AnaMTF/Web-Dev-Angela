@@ -206,13 +206,11 @@ app.post("/register", passport.authenticate("local-register", {
   failureRedirect: '/register'
 }));
 
-app.get("/secrets", async (req, res) => {
-  try {
-    const secrets = await db.query("SELECT secret FROM secrets");
-    res.render("secrets.ejs", { secretsFromUsers: secrets.rows });
-    // console.log(secrets.rows)
-  } catch (err) {
-    console.log(err);
+app.get("/secrets", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("secrets.ejs");
+  } else {
+    res.redirect("/login");
   }
 });
 
