@@ -63,15 +63,18 @@ app.get("/secrets", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const result = await db.query(
-        `SELECT secret FROM users WHERE email = $1`,
-        [req.user.email]
+        `SELECT secret FROM secrets`,// WHERE email = $1`,
+        //[req.user.email]
       );
       console.log(result);
-      const secret = result.rows[0].secret;
-      if (secret) {
-        res.render("secrets.ejs", { secret: secret });
+      //const secret = result.rows[0].secret;
+      const secretsList = result.rows;
+      if (secretsList.length > 0) {
+        res.render("secrets.ejs", { secretsList: secretsList });
       } else {
-        res.render("secrets.ejs", { secret: "Jack Bauer is my hero." });
+        res.render("secrets.ejs", { secretsList: {
+          secret: "Jack Bauer is my hero."
+        }});
       }
     } catch (err) {
       console.log(err);
@@ -118,7 +121,7 @@ app.post("/register", async (req, res) => {
   const password = req.body.password;
 
   try {
-    const checkResult = await db.query("SELECT * FROM users WHERE email = $1", [
+    const checkResult = await db.query("SELECT * FROM usersfinal WHERE email = $1", [
       email,
     ]);
 
@@ -130,7 +133,7 @@ app.post("/register", async (req, res) => {
           console.error("Error hashing password:", err);
         } else {
           const result = await db.query(
-            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
+            "INSERT INTO usersfinal (email, password) VALUES ($1, $2) RETURNING *",
             [email, hash]
           );
           const user = result.rows[0];
@@ -149,11 +152,11 @@ app.post("/register", async (req, res) => {
 
 ////////////////SUBMIT POST ROUTE/////////////////
 app.post("/submit", async function (req, res) {
-  const submittedSecret = req.body.secret;
+  const secret = req.body.secret;
   console.log(req.user);
   try {
-    await db.query(`UPDATE users SET secret = $1 WHERE email = $2`, [
-      submittedSecret,
+    await db.query(`INSERT INTO secrets (secret, email) VALUES ($1, $2)`, [
+      secret,
       req.user.email,
     ]);
     res.redirect("/secrets");
@@ -166,7 +169,7 @@ passport.use(
   "local",
   new Strategy(async function verify(username, password, cb) {
     try {
-      const result = await db.query("SELECT * FROM users WHERE email = $1 ", [
+      const result = await db.query("SELECT * FROM usersfinal WHERE email = $1 ", [
         username,
       ]);
       if (result.rows.length > 0) {
@@ -204,12 +207,12 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, cb) => {
       try {
-        const result = await db.query("SELECT * FROM users WHERE email = $1", [
+        const result = await db.query("SELECT * FROM usersfinal WHERE email = $1", [
           profile.email,
         ]);
         if (result.rows.length === 0) {
           const newUser = await db.query(
-            "INSERT INTO users (email, password) VALUES ($1, $2)",
+            "INSERT INTO usersfinal (email, password) VALUES ($1, $2)",
             [profile.email, "google"]
           );
           return cb(null, newUser.rows[0]);
